@@ -27,8 +27,10 @@ app.set('views', path.join(__dirname, 'views'));
 //1)Global Middleware
 ///this helmet for more than 15 middle ware functions
 app.use(helmet());
+//this will make app work with post and get
 app.use(cors());
-
+//this will open all methods
+app.options(`*`, cors());
 //to know some info about your requestes in development
 if (process.env.NODE_ENV === 'development') app.use(morgan(`dev`));
 
