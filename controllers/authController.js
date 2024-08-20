@@ -12,7 +12,7 @@ const signToken = (id) =>
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-const loginUser = (statusCode, curUser, res) => {
+const loginUser = (statusCode, curUser, req, res) => {
   // console.log('finesh send2');
   const token = signToken(curUser._id);
   // console.log('finesh send3');
@@ -25,7 +25,9 @@ const loginUser = (statusCode, curUser, res) => {
   };
   // console.log('finesh send4');
   // in prod only do this cookies
-  if (process.env.NODE_ENV === 'production') res.cookie('jwt', token, cookieOptions);
+  // if (process.env.NODE_ENV === 'production') res.cookie('jwt', token, cookieOptions);
+  if (req.secure || req.headers(`x-forwarded-proto`) === 'https')
+    res.cookie('jwt', token, cookieOptions);
 
   res.status(statusCode).json({
     status: 'success',
@@ -44,7 +46,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   await new Email(newUser, url).sendWelcome();
   // console.log('finesh send');
 
-  loginUser(201, newUser, res);
+  loginUser(201, newUser, req, res);
 });
 // login method
 exports.login = catchAsync(async (req, res, next) => {
@@ -58,7 +60,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
-  loginUser(200, curUser, res);
+  loginUser(200, curUser, req, res);
 });
 
 // logout method
@@ -192,7 +194,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   //login
-  loginUser(200, user, res);
+  loginUser(200, user, req, res);
 });
 //change password normally
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -208,5 +210,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   //login
-  loginUser(200, user, res);
+  loginUser(200, user, req, res);
 });
