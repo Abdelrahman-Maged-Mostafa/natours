@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const tourRouter = require('./routes/tourRouter');
 const userRouter = require('./routes/userRouter');
@@ -24,6 +25,7 @@ app.set('views', path.join(__dirname, 'views'));
 //1)Global Middleware
 ///this helmet for more than 15 middle ware functions
 app.use(helmet());
+app.use(cors());
 
 //to know some info about your requestes in development
 if (process.env.NODE_ENV === 'development') app.use(morgan(`dev`));
