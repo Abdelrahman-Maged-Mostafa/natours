@@ -19,6 +19,8 @@ const viewRouter = require('./routes/viewRouters');
 const bookingRouter = require('./routes/bookingRoutes');
 
 const app = express();
+
+app.enable('trust proxy');
 //Render some template and see this in your wep
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
