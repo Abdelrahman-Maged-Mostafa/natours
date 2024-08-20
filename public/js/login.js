@@ -3,7 +3,7 @@
 
 const login = async (email, password) => {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/v1/users/login`, {
+    const res = await fetch(`/api/v1/users/login`, {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -33,7 +33,7 @@ if (logForm) {
 
 const logout = async () => {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/v1/users/logout`);
+    const res = await fetch(`/api/v1/users/logout`);
     const data = await res.json();
     if (data.status === 'success') {
       location.reload(true);
@@ -57,7 +57,7 @@ if (logoutBtn) logoutBtn.addEventListener(`click`, logout);
 // update data
 const updateFormUser = async (form, name, email, photo) => {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/v1/users/updateMe`, {
+    const res = await fetch(`/api/v1/users/updateMe`, {
       method: 'PATCH',
       // headers: { 'Content-type': 'application/json' },
       // body: JSON.stringify({ newName: name, newEmail: email }),
@@ -107,7 +107,7 @@ if (updateForm) {
 // update Password
 const updatePasswordUser = async (curPassword, password, confirmPassword) => {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/v1/users/updateMyPassword`, {
+    const res = await fetch(`/api/v1/users/updateMyPassword`, {
       method: 'PATCH',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
@@ -172,7 +172,7 @@ if (0 > 1 && Stripe) {
     try {
       const bookTour = async (curTourId) => {
         const sission = await fetch(
-          `http://127.0.0.1:8000/api/v1/bookings/checkout-session/${curTourId}`,
+          `/api/v1/bookings/checkout-session/${curTourId}`,
           // {
           //   method: 'GET',
           // },
