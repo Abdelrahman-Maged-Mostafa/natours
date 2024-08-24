@@ -21,10 +21,7 @@ const bookingRouter = require('./routes/bookingRoutes');
 const app = express();
 // for unable use image from blob vercel
 app.use((req, res, next) => {
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; img-src 'self' data: https://*.vercel-storage.com;",
-  );
+  res.setHeader('Content-Security-Policy', 'default-src *; img-src * data: blob:;');
   next();
 });
 /////
