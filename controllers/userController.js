@@ -51,7 +51,7 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
 
   const { url } = await put(filename, resize, {
     access: 'public',
-    token: 'vercel_blob_rw_Mmf6duD764KFNIhQ_AGlS1vEjYNZGcTIZdM5nhHEhXpqeDS',
+    token: process.env.BLOB_READ_WRITE_TOKEN,
   });
   req.file.filename = url;
   next();
