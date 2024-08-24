@@ -1,5 +1,6 @@
 // const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const { put } = require('@vercel/blob');
 const sharp = require('sharp');
 const User = require('../models/userModel');
 // const APIFeatures = require('../utils/APIFeatures');
@@ -42,12 +43,16 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
 
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-  await sharp(req.file.buffer)
+  const resize = await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`/img/users/${req.file.filename}`);
+    .jpeg({ quality: 90 });
+  // .toFile(`/img/users/${req.file.filename}`);
 
+  await put(req.file.filename, resize, {
+    access: 'public',
+    token: 'vercel_blob_rw_Mmf6duD764KFNIhQ_AGlS1vEjYNZGcTIZdM5nhHEhXpqeDS',
+  });
   next();
 });
 /////////////////////////////////////////////////////////////////
