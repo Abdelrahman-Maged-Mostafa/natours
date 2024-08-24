@@ -19,11 +19,6 @@ const viewRouter = require('./routes/viewRouters');
 const bookingRouter = require('./routes/bookingRoutes');
 
 const app = express();
-// for unable use image from blob vercel
-app.use((req, res, next) => {
-  res.setHeader('Content-Security-Policy', 'default-src *; img-src * data: blob:;');
-  next();
-});
 /////
 app.enable('trust proxy');
 //Render some template and see this in your wep
@@ -31,7 +26,18 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 //1)Global Middleware
 ///this helmet for more than 15 middle ware functions
-app.use(helmet());
+// app.use(helmet());
+// for unable use image from blob vercel
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https://*.vercel-storage.com'],
+      },
+    },
+  }),
+);
 //this will make app work with post and get
 app.use(cors());
 //this will open all methods
