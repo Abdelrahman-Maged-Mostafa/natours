@@ -41,7 +41,7 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
   // console.log(req.file);
   if (!req.file) return next();
 
-  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+  const filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
   const resize = await sharp(req.file.buffer)
     .resize(500, 500)
@@ -49,10 +49,11 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
     .jpeg({ quality: 90 });
   // .toFile(`/img/users/${req.file.filename}`);
 
-  await put(req.file.filename, resize, {
+  const { url } = await put(filename, resize, {
     access: 'public',
     token: 'vercel_blob_rw_Mmf6duD764KFNIhQ_AGlS1vEjYNZGcTIZdM5nhHEhXpqeDS',
   });
+  req.file.filename = url;
   next();
 });
 /////////////////////////////////////////////////////////////////
