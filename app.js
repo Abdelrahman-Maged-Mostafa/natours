@@ -19,7 +19,12 @@ const viewRouter = require('./routes/viewRouters');
 const bookingRouter = require('./routes/bookingRoutes');
 
 const app = express();
-
+// for unable use image from blob vercel
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', "img-src 'self' data: https://*.vercel-storage.com;");
+  next();
+});
+/////
 app.enable('trust proxy');
 //Render some template and see this in your wep
 app.set('view engine', 'pug');
